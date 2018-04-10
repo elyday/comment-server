@@ -2,7 +2,7 @@
     "name": "elyday/comment-server",
     "description": "A PHP Comment Server for Jekyll Blogs.",
     "keywords": ["php", "comment", "blog", "jekyll"],
-    "license": "MIT",
+    "license": "GPL-3.0-only",
     "type": "project",
     "require": {
         "php": ">=7.1.3",
