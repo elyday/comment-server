@@ -14,3 +14,6 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/api/blog', ["uses" => "BlogController@index"]);
+$router->get('/api/blog/{hash}', ["uses" => "BlogController@getBlog"]);

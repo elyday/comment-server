@@ -1,7 +1,7 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "name": "elyday/comment-server",
+    "description": "A PHP Comment Server for Jekyll Blogs.",
+    "keywords": ["php", "comment", "blog", "jekyll"],
     "license": "MIT",
     "type": "project",
     "require": {
