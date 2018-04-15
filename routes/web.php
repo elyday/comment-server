@@ -17,3 +17,4 @@ $router->get('/', function () use ($router) {
 
 $router->get('/api/blog', ["uses" => "BlogController@index"]);
 $router->get('/api/blog/{hash}', ["uses" => "BlogController@getBlog"]);
+$router->get('/api/blog/{hash}/article', ["uses" => "BlogController@getBlogWithArticles"]);
