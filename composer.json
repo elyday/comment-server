@@ -32,6 +32,11 @@
             "php -r \"copy('.env.example', '.env');\""
         ]
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
