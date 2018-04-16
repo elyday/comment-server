@@ -14,15 +14,16 @@ class BlogEntry extends Migration
     public function up()
     {
         Schema::create("blog_article", function (Blueprint $table) {
-            $table->integer("id", true);
-            $table->integer("blogId");
+            $table->string("hash", 50);
+            $table->primary("hash");
+            $table->string("blogHash", 50);
             $table->string("title");
             $table->string("author");
             $table->string("url");
             $table->timestamps();
         });
         Schema::table("blog_article", function (Blueprint $table) {
-            $table->foreign("blogId")->references("id")->on("blog");
+            $table->foreign("blogHash")->references("hash")->on("blog");
         });
     }
 

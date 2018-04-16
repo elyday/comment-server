@@ -31,7 +31,7 @@ class BlogController extends Controller
 
         if ($blogResult != null) {
             $blogArticle = new BlogArticle();
-            $blogResult["articles"] = $blogArticle->where("blogId", $blogResult["id"])->get();
+            $blogResult["articles"] = $blogArticle->where("blogHash", $blogHash)->get();
 
             return $blogResult != null ? FormatHelper::formatData($blogResult) : FormatHelper::formatData(array(), FALSE);
         } else {
