@@ -17,13 +17,6 @@ class BlogController extends Controller
         return FormatHelper::formatData(Blog::all());
     }
 
-    public function getBlog($blogHash)
-    {
-        $blog = new Blog();
-        $return = $blog->where("hash", $blogHash)->first();
-        return $return != null ? FormatHelper::formatData($return) : FormatHelper::formatData(array(), FALSE);
-    }
-
     public function getBlogWithArticles($blogHash)
     {
         $blog = new Blog();
@@ -31,9 +24,25 @@ class BlogController extends Controller
 
         if ($blogResult != null) {
             $blogArticle = new BlogArticle();
-            $blogResult["articles"] = $blogArticle->where("blogHash", $blogHash)->get();
+            $blogResult["articles"] = $blogArticle->where("blogHash", $blogHash)->orderBy("created_at")->get();
 
-            return $blogResult != null ? FormatHelper::formatData($blogResult) : FormatHelper::formatData(array(), FALSE);
+            return FormatHelper::formatData($blogResult);
+        } else {
+            return FormatHelper::formatData(array(), false);
+        }
+    }
+
+    public function getArticleWithBlogInformation($articleHash)
+    {
+        $blog = new Blog();
+        $article = new BlogArticle();
+        $articleResult = $article->where("hash", $articleHash)->first();
+
+        if ($articleResult != null) {
+            $blogResult = $blog->where("hash", $articleResult->blogHash)->orderBy("created_at")->first();
+            $blogResult["article"] = $articleResult;
+
+            return FormatHelper::formatData($blogResult);
         } else {
             return FormatHelper::formatData(array(), false);
         }

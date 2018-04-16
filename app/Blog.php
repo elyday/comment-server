@@ -31,7 +31,5 @@ class Blog extends Model
         'name', 'description', 'url'
     ];
 
-    protected $hidden = [
-        'hash'
-    ];
+    protected $hidden = [];
 }
