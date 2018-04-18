@@ -32,7 +32,12 @@ class Comments extends Model
     protected $table = "comments";
 
     protected $fillable = [
-        'authorName', 'authorMail', 'title', 'content'
+        'hash',
+        'articleHash',
+        'authorName',
+        'authorMail',
+        'title',
+        'content'
     ];
 
     protected $hidden = [];

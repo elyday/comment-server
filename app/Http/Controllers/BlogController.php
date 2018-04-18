@@ -28,7 +28,7 @@ class BlogController extends Controller
 
             return FormatHelper::formatData($blogResult);
         } else {
-            return FormatHelper::formatData(array(), false);
+            return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
         }
     }
 
@@ -44,7 +44,7 @@ class BlogController extends Controller
 
             return FormatHelper::formatData($blogResult);
         } else {
-            return FormatHelper::formatData(array(), false);
+            return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
         }
     }
 }

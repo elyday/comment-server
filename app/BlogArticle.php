@@ -30,7 +30,11 @@ class BlogArticle extends Model
     protected $table = "blog_article";
 
     protected $fillable = [
-        'blogId', 'title', 'author', 'url'
+        'hash',
+        'blogHash',
+        'title',
+        'author',
+        'url'
     ];
 
     protected $hidden = [];

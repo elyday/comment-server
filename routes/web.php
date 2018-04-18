@@ -22,3 +22,6 @@ $router->get('/api/article/{hash}', ["uses" => "BlogController@getArticleWithBlo
 $router->get('/api/article/{hash}/comments', ["uses" => "CommentController@index"]);
 
 $router->get('/api/comment/{hash}', ["uses" => "CommentController@getComment"]);
+$router->post('/api/comment/add', ["uses" => "CommentController@addComment"]);
+$router->put('/api/comment/edit/{hash}', ["uses" => "CommentController@editComment"]);
+$router->delete('/api/comment/delete/{hash}', ["uses" => "CommentController@deleteComment"]);
