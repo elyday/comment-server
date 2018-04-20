@@ -29,8 +29,15 @@ class SecureCommentInputMiddleware
 
         $authorName = $request->input("authorName");
         $content = $request->input("content");
+        $captcha = $request->input("captcha");
 
-        if ($method == "POST" && $requestPath == "/api/comment/add") {
+        if ($captcha == null) {
+            $returnArray["error-code"] = "captcha-missing";
+            $returnStatus = 400;
+        } else if ($captcha != getenv("CAPTCHA_SECRET")) {
+            $returnArray["error-code"] = "captcha-wrong";
+            $returnStatus = 400;
+        } else if ($method == "POST" && $requestPath == "/api/comment/add") {
             $blogHash = $request->input("blogHash");
             $articleHash = $request->input("articleHash");
             $blogResult = $blog->where("hash", $blogHash)->first();
@@ -43,14 +50,14 @@ class SecureCommentInputMiddleware
                 $returnArray["error-code"] = "invalid-request";
                 $returnStatus = 400;
             } else if ($blogResult == null) {
-                $returnArray["error-code"] = "not-found";
+                $returnArray["error-code"] = "blog-not-found";
                 $returnStatus = 404;
             }
         } else if ($method == "PUT" && strpos($requestPath, "/api/comment/edit/") !== false) {
             $hash = $request->route()[2]["hash"];
             $commentResult = $comment->where("hash", $hash)->first();
             if ($commentResult == null) {
-                $returnArray["error-code"] = "not-found";
+                $returnArray["error-code"] = "comment-not-found";
                 $returnStatus = 404;
             }
         } else {
