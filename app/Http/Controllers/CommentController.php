@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Blog;
 use App\BlogArticle;
 use App\Comments;
 use App\Helper\FormatHelper;
@@ -32,16 +31,12 @@ class CommentController extends Controller
 
     public function getComment($commentHash)
     {
-        $article = new BlogArticle();
         $comment = new Comments();
 
         $commentResult = $comment->where("hash", $commentHash)->first();
 
         if ($commentResult != null) {
-            $articleResult = $article->where("hash", $commentResult->articleHash)->first();
-            $articleResult["comment"] = $commentResult;
-
-            return FormatHelper::formatData($articleResult);
+            return FormatHelper::formatData($commentResult);
         } else {
             return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
         }
@@ -49,7 +44,6 @@ class CommentController extends Controller
 
     public function addComment(Request $request)
     {
-        $blog = new Blog();
         $article = new BlogArticle();
         $comment = new Comments();
 
@@ -65,53 +59,44 @@ class CommentController extends Controller
         $title = $request->input("title");
         $content = $request->input("content");
 
-        if ($blogHash != null && $articleHash != null && $articleTitle != null && $articleAuthor != null && $articleUrl != null && $authorName != null && $content != null) {
-            $blogResult = $blog->where("hash", $blogHash)->first();
-            $articleResult = $article->where("hash", $articleHash)->where("blogHash", $blogHash)->first();
+        $articleResult = $article->where("hash", $articleHash)->where("blogHash", $blogHash)->first();
 
-            if ($blogResult != null) {
-                if ($articleResult != null) {
-                    $commentHash = md5(time());
-                    $dataArray = array(
-                        "hash" => $commentHash,
-                        "articleHash" => $articleHash,
-                        "authorName" => $authorName,
-                        "authorMail" => $authorMail,
-                        "title" => $title,
-                        "content" => $content
-                    );
-                    $comment->create($dataArray);
+        if ($articleResult != null) {
+            $commentHash = md5(time());
+            $dataArray = array(
+                "hash" => $commentHash,
+                "articleHash" => $articleHash,
+                "authorName" => $authorName,
+                "authorMail" => $authorMail,
+                "title" => $title,
+                "content" => $content
+            );
+            $comment->create($dataArray);
 
-                    return $this->getComment($commentHash);
-                } else {
-                    $articleHash = md5(time());
-                    $dataArray = array(
-                        "hash" => $articleHash,
-                        "blogHash" => $blogHash,
-                        "title" => $articleTitle,
-                        "author" => $articleAuthor,
-                        "url" => $articleUrl
-                    );
-                    $article->create($dataArray);
-
-                    $commentHash = md5(time());
-                    $dataArray = array(
-                        "hash" => $commentHash,
-                        "articleHash" => $articleHash,
-                        "authorName" => $authorName,
-                        "authorMail" => $authorMail,
-                        "title" => $title,
-                        "content" => $content
-                    );
-                    $comment->create($dataArray);
-
-                    return $this->getComment($commentHash);
-                }
-            } else {
-                return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
-            }
+            return $this->getComment($commentHash);
         } else {
-            return FormatHelper::formatData(array("errorCode" => "invalid-request"), false, 400);
+            $articleHash = md5(time());
+            $dataArray = array(
+                "hash" => $articleHash,
+                "blogHash" => $blogHash,
+                "title" => $articleTitle,
+                "author" => $articleAuthor,
+                "url" => $articleUrl
+            );
+            $article->create($dataArray);
+
+            $commentHash = md5(time());
+            $dataArray = array(
+                "hash" => $commentHash,
+                "articleHash" => $articleHash,
+                "authorName" => $authorName,
+                "authorMail" => $authorMail,
+                "title" => $title,
+                "content" => $content
+            );
+            $comment->create($dataArray);
+
+            return $this->getComment($commentHash);
         }
     }
 
@@ -124,32 +109,27 @@ class CommentController extends Controller
         $title = $request->input("title");
         $content = $request->input("content");
 
-        $commentResult = $comment->where("hash", $commentHash)->first();
-        if ($commentResult != null) {
-            $dataArray = array();
+        $dataArray = array();
 
-            if ($authorName != null) {
-                $dataArray["authorName"] = $authorName;
-            }
-
-            if ($authorMail != null) {
-                $dataArray["authorMail"] = $authorMail;
-            }
-
-            if ($title != null) {
-                $dataArray["title"] = $title;
-            }
-
-            if ($content != null) {
-                $dataArray["content"] = $content;
-            }
-
-            $comment->where("hash", $commentHash)->update($dataArray);
-
-            return $this->getComment($commentHash);
-        } else {
-            return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
+        if ($authorName != null) {
+            $dataArray["authorName"] = $authorName;
         }
+
+        if ($authorMail != null) {
+            $dataArray["authorMail"] = $authorMail;
+        }
+
+        if ($title != null) {
+            $dataArray["title"] = $title;
+        }
+
+        if ($content != null) {
+            $dataArray["content"] = $content;
+        }
+
+        $comment->where("hash", $commentHash)->update($dataArray);
+
+        return $this->getComment($commentHash);
     }
 
     public function deleteComment($commentHash)

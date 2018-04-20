@@ -18,7 +18,7 @@ $router->get('/', function () use ($router) {
 $router->get('/api/blog', ["uses" => "BlogController@index"]);
 $router->get('/api/blog/{hash}', ["uses" => "BlogController@getBlogWithArticles"]);
 
-$router->get('/api/article/{hash}', ["uses" => "BlogController@getArticleWithBlogInformation"]);
+$router->get('/api/article/{hash}', ["uses" => "BlogController@getArticle"]);
 $router->get('/api/article/{hash}/comments', ["uses" => "CommentController@index"]);
 
 $router->get('/api/comment/{hash}', ["uses" => "CommentController@getComment"]);

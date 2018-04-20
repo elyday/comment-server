@@ -32,17 +32,13 @@ class BlogController extends Controller
         }
     }
 
-    public function getArticleWithBlogInformation($articleHash)
+    public function getArticle($articleHash)
     {
-        $blog = new Blog();
         $article = new BlogArticle();
         $articleResult = $article->where("hash", $articleHash)->first();
 
         if ($articleResult != null) {
-            $blogResult = $blog->where("hash", $articleResult->blogHash)->orderBy("created_at")->first();
-            $blogResult["article"] = $articleResult;
-
-            return FormatHelper::formatData($blogResult);
+            return FormatHelper::formatData($articleResult);
         } else {
             return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
         }

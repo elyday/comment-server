@@ -7,7 +7,6 @@ use App\Comments;
 use App\Helper\FormatHelper;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 class SecureCommentInputMiddleware
 {
