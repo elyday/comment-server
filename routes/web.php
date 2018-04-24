@@ -22,9 +22,15 @@ $router->get('/api/article/{hash}', ["uses" => "BlogController@getArticle"]);
 $router->get('/api/article/{hash}/comments', ["uses" => "CommentController@index"]);
 
 $router->get('/api/comment/{hash}', ["uses" => "CommentController@getComment"]);
-$router->delete('/api/comment/delete/{hash}', ["uses" => "CommentController@deleteComment"]);
 
 $router->group(["middleware" => "secureCommentMiddleware"], function($router) {
     $router->post('/api/comment/add', ["uses" => "CommentController@addComment"]);
+});
+
+$router->group(["middleware" => ["authMiddleware", "secureCommentMiddleware"]], function($router) {
     $router->put('/api/comment/edit/{hash}', ["uses" => "CommentController@editComment"]);
+});
+
+$router->group(["middleware" => "authMiddleware"], function($router) {
+    $router->delete('/api/comment/delete/{hash}', ["uses" => "CommentController@deleteComment"]);
 });

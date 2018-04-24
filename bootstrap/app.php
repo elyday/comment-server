@@ -65,6 +65,7 @@ $app->singleton(
 
 $app->routeMiddleware([
     'secureCommentMiddleware' => App\Http\Middleware\SecureCommentInputMiddleware::class,
+    'authMiddleware' => \App\Http\Middleware\AuthMiddleware::class,
 ]);
 
 /*
