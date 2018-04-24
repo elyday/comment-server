@@ -29,8 +29,12 @@ class SecureCommentInputMiddleware
         $authorName = $request->input("authorName");
         $content = $request->input("content");
         $captcha = $request->input("captcha");
+        $spam = $request->input("computer");
 
-        if ($captcha == null) {
+        if ($spam != null) {
+            $returnArray["error-code"] = "bot-detected";
+            $returnStatus = 403;
+        } else if ($captcha == null) {
             $returnArray["error-code"] = "captcha-missing";
             $returnStatus = 400;
         } else if ($captcha != getenv("CAPTCHA_SECRET")) {
