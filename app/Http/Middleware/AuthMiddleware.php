@@ -30,9 +30,7 @@ class AuthMiddleware
 
         if ($request->header('Authorization') == null || $token == null) {
             $returnArray["error-code"] = "no-token-provided";
-        }
-
-        if (!$this->retrieveAndValidateToken($token)) {
+        } else if (!$this->retrieveAndValidateToken($token)) {
             $returnArray["error-code"] = "token-is-not-valid";
         }
 
