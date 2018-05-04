@@ -59,12 +59,13 @@ $app->singleton(
 |
 */
 
-/*$app->middleware([
-    App\Http\Middleware\SecureCommentInputMiddleware::class
-]);*/
+$app->middleware([
+    App\Http\Middleware\CorsMiddleware::class
+]);
 
 $app->routeMiddleware([
     'secureCommentMiddleware' => App\Http\Middleware\SecureCommentInputMiddleware::class,
+    'secureBlogMiddleware' => App\Http\Middleware\SecureBlogInputMiddleware::class,
     'authMiddleware' => \App\Http\Middleware\AuthMiddleware::class,
 ]);
 

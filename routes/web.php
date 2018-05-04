@@ -23,14 +23,30 @@ $router->get('/api/article/{hash}/comments', ["uses" => "CommentController@index
 
 $router->get('/api/comment/{hash}', ["uses" => "CommentController@getComment"]);
 
-$router->group(["middleware" => "secureCommentMiddleware"], function($router) {
+$router->group(["middleware" => "secureCommentMiddleware"], function ($router) {
     $router->post('/api/comment/add', ["uses" => "CommentController@addComment"]);
 });
 
-$router->group(["middleware" => ["authMiddleware", "secureCommentMiddleware"]], function($router) {
+$router->group([
+    "middleware" => [
+        "authMiddleware",
+        "secureCommentMiddleware"
+    ]
+], function ($router) {
     $router->put('/api/comment/edit/{hash}', ["uses" => "CommentController@editComment"]);
 });
 
-$router->group(["middleware" => "authMiddleware"], function($router) {
+$router->group([
+    "middleware" => [
+        "authMiddleware",
+        "secureBlogMiddleware"
+    ]
+], function ($router) {
+    $router->post('/api/blog/add', ["uses" => "BlogController@addBlog"]);
+    $router->put('/api/blog/edit/{hash}', ["uses" => "BlogController@editBlog"]);
+});
+
+$router->group(["middleware" => "authMiddleware"], function ($router) {
     $router->delete('/api/comment/delete/{hash}', ["uses" => "CommentController@deleteComment"]);
+    $router->delete('/api/blog/delete/{hash}', ["uses" => "BlogController@deleteBlog"]);
 });
