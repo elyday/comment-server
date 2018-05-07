@@ -143,4 +143,9 @@ class CommentController extends Controller
             return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
         }
     }
+
+    public function getAllComments()
+    {
+        return FormatHelper::formatData(Comments::all());
+    }
 }

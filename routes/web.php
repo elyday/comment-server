@@ -49,6 +49,7 @@ $router->group([
 });
 
 $router->group(["middleware" => "authMiddleware"], function ($router) {
-    $router->delete('/api/comment/delete/{hash}', ["uses" => "CommentController@deleteComment"]);
+    Route::get('/api/comment', 'CommentController@getAllComments');
+    Route::delete('/api/comment/delete/{hash}', 'CommentController@deleteComment');
     Route::delete('/api/blog/{hash}', 'BlogController@deleteBlog');
 });
