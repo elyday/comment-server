@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
@@ -43,7 +45,8 @@ $router->group([
     ]
 ], function ($router) {
     $router->post('/api/blog/add', ["uses" => "BlogController@addBlog"]);
-    $router->put('/api/blog/edit/{hash}', ["uses" => "BlogController@editBlog"]);
+    Route::options('/api/blog/edit/{hash}', 'BlogController@editBlog');
+    Route::put('/api/blog/edit/{hash}', 'BlogController@editBlog');
 });
 
 $router->group(["middleware" => "authMiddleware"], function ($router) {

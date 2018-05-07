@@ -10,7 +10,8 @@
         "vlucas/phpdotenv": "~2.2",
         "barryvdh/laravel-ide-helper": "v2.4.3",
         "doctrine/dbal": "2.3.5",
-        "auth0/auth0-php": "5.1.1"
+        "auth0/auth0-php": "5.1.1",
+        "barryvdh/laravel-cors": "^0.11.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
