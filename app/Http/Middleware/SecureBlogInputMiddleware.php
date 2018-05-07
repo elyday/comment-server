@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 
 use App\Blog;
+use App\Helper\FormatHelper;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -25,17 +26,17 @@ class SecureBlogInputMiddleware
         $returnStatus = 0;
 
 
-        if ($method == "POST" && $requestPath == "/api/blog/add") {
+        if ($method == "POST" && $requestPath == "/api/blog") {
             $name = $request->input("name");
             $description = $request->input("description");
             $url = $request->input("url");
 
-            if ($name == null && $description == null && $url == null) {
+            if ($name == null || $description == null || $url == null) {
                 $returnArray["error-code"] = "invalid-request";
                 $returnStatus = 400;
             }
-        } else if ($method == "PUT" && strpos($requestPath, "/api/blog/edit/") !== false) {
-            $hash = $request->route()[2]["hash"];
+        } else if ($method == "PUT" && $requestPath == "/api/blog") {
+            $hash = $request->input("hash");
             $blogResult = $blog->where("hash", $hash)->first();
             if ($blogResult == null) {
                 $returnArray["error-code"] = "blog-not-found";

@@ -26,9 +26,14 @@ use Illuminate\Database\Eloquent\Model;
 class Blog extends Model
 {
     protected $table = "blog";
+    protected $primaryKey = "hash";
+    protected $keyType = "varchar";
 
     protected $fillable = [
-        'name', 'description', 'url'
+        'hash',
+        'name',
+        'description',
+        'url'
     ];
 
     protected $hidden = [];

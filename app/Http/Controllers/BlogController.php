@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\BlogArticle;
 use App\Helper\FormatHelper;
-use Request;
+use Illuminate\Http\Request;
 
 /**
  * Class BlogController
@@ -29,7 +29,7 @@ class BlogController extends Controller
 
             return FormatHelper::formatData($blogResult);
         } else {
-            return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
+            return FormatHelper::formatData(array("errorCode" => "blog-not-found"), false, 404);
         }
     }
 
@@ -41,7 +41,7 @@ class BlogController extends Controller
         if ($articleResult != null) {
             return FormatHelper::formatData($articleResult);
         } else {
-            return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
+            return FormatHelper::formatData(array("errorCode" => "article-not-found"), false, 404);
         }
     }
 
@@ -61,12 +61,14 @@ class BlogController extends Controller
             "url" => $url
         );
         $blog->create($dataArray);
+        return $dataArray;
     }
 
-    public function editBlog(Request $request, $blogHash)
+    public function editBlog(Request $request)
     {
         $blog = new Blog();
 
+        $blogHash = $request->input("hash");
         $name = $request->input("name");
         $description = $request->input("description");
         $url = $request->input("url");
@@ -96,9 +98,9 @@ class BlogController extends Controller
         $blogResult = $blog->where("hash", $blogHash)->first();
         if ($blogResult != null) {
             $blogResult->delete();
-            return FormatHelper::formatData(array("errorCode" => "blog-deleted"), true);
+            return FormatHelper::formatData(array(), true);
         } else {
-            return FormatHelper::formatData(array("errorCode" => "not-found"), false, 404);
+            return FormatHelper::formatData(array("errorCode" => "blog-not-found"), false, 404);
         }
     }
 }

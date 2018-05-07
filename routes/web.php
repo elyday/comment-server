@@ -44,12 +44,11 @@ $router->group([
         "secureBlogMiddleware"
     ]
 ], function ($router) {
-    $router->post('/api/blog/add', ["uses" => "BlogController@addBlog"]);
-    Route::options('/api/blog/edit/{hash}', 'BlogController@editBlog');
-    Route::put('/api/blog/edit/{hash}', 'BlogController@editBlog');
+    Route::post('/api/blog', 'BlogController@addBlog');
+    Route::put('/api/blog', 'BlogController@editBlog');
 });
 
 $router->group(["middleware" => "authMiddleware"], function ($router) {
     $router->delete('/api/comment/delete/{hash}', ["uses" => "CommentController@deleteComment"]);
-    $router->delete('/api/blog/delete/{hash}', ["uses" => "BlogController@deleteBlog"]);
+    Route::delete('/api/blog/{hash}', 'BlogController@deleteBlog');
 });

@@ -53,8 +53,8 @@ class AuthMiddleware
         try {
             $verifier = new JWTVerifier([
                 'supported_algs' => ["RS256"],
-                'valid_audiences' => [getenv("AUTH0_API_AUDIENCE")],
-                'authorized_iss' => [getenv("AUTH0_DOMAIN")]
+                'valid_audiences' => ['https://comment.eynet.xyz/'],
+                'authorized_iss' => ['https://comment-server.eu.auth0.com/'],
             ]);
 
             $verifier->verifyAndDecode($token);
