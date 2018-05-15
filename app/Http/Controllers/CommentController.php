@@ -100,10 +100,11 @@ class CommentController extends Controller
         }
     }
 
-    public function editComment(Request $request, $commentHash)
+    public function editComment(Request $request)
     {
         $comment = new Comments();
 
+        $commentHash = $request->input("hash");
         $authorName = $request->input("authorName");
         $authorMail = $request->input("authorMail");
         $title = $request->input("title");

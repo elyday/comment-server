@@ -31,33 +31,36 @@ class SecureCommentInputMiddleware
         $captcha = $request->input("captcha");
         $spam = $request->input("computer");
 
-        if ($spam != null) {
-            $returnArray["error-code"] = "bot-detected";
-            $returnStatus = 403;
-        } else if ($captcha == null) {
-            $returnArray["error-code"] = "captcha-missing";
-            $returnStatus = 400;
-        } else if ($captcha != getenv("CAPTCHA_SECRET")) {
-            $returnArray["error-code"] = "captcha-wrong";
-            $returnStatus = 400;
-        } else if ($method == "POST" && $requestPath == "/api/comment/add") {
-            $blogHash = $request->input("blogHash");
-            $articleHash = $request->input("articleHash");
-            $blogResult = $blog->where("hash", $blogHash)->first();
 
-            $articleTitle = $request->input("articleTitle");
-            $articleAuthor = $request->input("articleAuthor");
-            $articleUrl = $request->input("articleUrl");
-
-            if ($blogHash == null && $articleHash == null && $articleTitle == null && $articleAuthor == null && $articleUrl == null && $authorName == null && $content == null) {
-                $returnArray["error-code"] = "invalid-request";
+        if ($method == "POST" && $requestPath == "/api/comment/add") {
+            if ($spam != null) {
+                $returnArray["error-code"] = "bot-detected";
+                $returnStatus = 403;
+            } else if ($captcha == null) {
+                $returnArray["error-code"] = "captcha-missing";
                 $returnStatus = 400;
-            } else if ($blogResult == null) {
-                $returnArray["error-code"] = "blog-not-found";
-                $returnStatus = 404;
+            } else if ($captcha != getenv("CAPTCHA_SECRET")) {
+                $returnArray["error-code"] = "captcha-wrong";
+                $returnStatus = 400;
+            } else {
+                $blogHash = $request->input("blogHash");
+                $articleHash = $request->input("articleHash");
+                $blogResult = $blog->where("hash", $blogHash)->first();
+
+                $articleTitle = $request->input("articleTitle");
+                $articleAuthor = $request->input("articleAuthor");
+                $articleUrl = $request->input("articleUrl");
+
+                if ($blogHash == null && $articleHash == null && $articleTitle == null && $articleAuthor == null && $articleUrl == null && $authorName == null && $content == null) {
+                    $returnArray["error-code"] = "invalid-request";
+                    $returnStatus = 400;
+                } else if ($blogResult == null) {
+                    $returnArray["error-code"] = "blog-not-found";
+                    $returnStatus = 404;
+                }
             }
-        } else if ($method == "PUT" && strpos($requestPath, "/api/comment/edit/") !== false) {
-            $hash = $request->route()[2]["hash"];
+        } else if ($method == "PUT" && $requestPath == "/api/comment") {
+            $hash = $request->input("hash");
             $commentResult = $comment->where("hash", $hash)->first();
             if ($commentResult == null) {
                 $returnArray["error-code"] = "comment-not-found";

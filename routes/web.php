@@ -35,7 +35,7 @@ $router->group([
         "secureCommentMiddleware"
     ]
 ], function ($router) {
-    $router->put('/api/comment/edit/{hash}', ["uses" => "CommentController@editComment"]);
+    Route::put('/api/comment', 'CommentController@editComment');
 });
 
 $router->group([
@@ -50,6 +50,6 @@ $router->group([
 
 $router->group(["middleware" => "authMiddleware"], function ($router) {
     Route::get('/api/comment', 'CommentController@getAllComments');
-    Route::delete('/api/comment/delete/{hash}', 'CommentController@deleteComment');
+    Route::delete('/api/comment/{hash}', 'CommentController@deleteComment');
     Route::delete('/api/blog/{hash}', 'BlogController@deleteBlog');
 });
