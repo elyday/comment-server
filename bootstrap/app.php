@@ -65,6 +65,7 @@ $app->middleware([
 
 $app->routeMiddleware([
     'secureCommentMiddleware' => App\Http\Middleware\SecureCommentInputMiddleware::class,
+    'secureArticleMiddleware' => App\Http\Middleware\SecureArticleInputMiddleware::class,
     'secureBlogMiddleware' => App\Http\Middleware\SecureBlogInputMiddleware::class,
     'authMiddleware' => \App\Http\Middleware\AuthMiddleware::class,
 ]);

@@ -18,15 +18,12 @@ class BlogController extends Controller
         return FormatHelper::formatData(Blog::all());
     }
 
-    public function getBlogWithArticles($blogHash)
+    public function getBlogByHash($blogHash)
     {
         $blog = new Blog();
         $blogResult = $blog->where("hash", $blogHash)->first();
 
         if ($blogResult != null) {
-            $blogArticle = new BlogArticle();
-            $blogResult["articles"] = $blogArticle->where("blogHash", $blogHash)->orderBy("created_at")->get();
-
             return FormatHelper::formatData($blogResult);
         } else {
             return FormatHelper::formatData(array("errorCode" => "blog-not-found"), false, 404);

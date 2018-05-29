@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
 class BlogArticle extends Model
 {
     protected $table = "blog_article";
+    protected $primaryKey = 'hash';
+    protected $keyType = "varchar";
 
     protected $fillable = [
         'hash',
