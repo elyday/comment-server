@@ -51,7 +51,7 @@ class SecureCommentInputMiddleware
                 $articleAuthor = $request->input("articleAuthor");
                 $articleUrl = $request->input("articleUrl");
 
-                if ($blogHash == null && $articleHash == null && $articleTitle == null && $articleAuthor == null && $articleUrl == null && $authorName == null && $content == null) {
+                if ($blogHash == null || $articleHash == null || $articleTitle == null || $articleAuthor == null || $articleUrl == null || $authorName == null || $content == null) {
                     $returnArray["error-code"] = "invalid-request";
                     $returnStatus = 400;
                 } else if ($blogResult == null) {
