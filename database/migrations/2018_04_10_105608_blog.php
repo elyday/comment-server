@@ -14,7 +14,8 @@ class Blog extends Migration
     public function up()
     {
         Schema::create("blog", function (Blueprint $table) {
-            $table->integer("id", true);
+            $table->string("hash", 50);
+            $table->primary("hash");
             $table->string("name");
             $table->text("description");
             $table->string("url");

@@ -23,7 +23,7 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__ . '/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 $app->withEloquent();
 
@@ -59,13 +59,16 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    \Barryvdh\Cors\HandleCors::class
+]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'secureCommentMiddleware' => App\Http\Middleware\SecureCommentInputMiddleware::class,
+    'secureArticleMiddleware' => App\Http\Middleware\SecureArticleInputMiddleware::class,
+    'secureBlogMiddleware' => App\Http\Middleware\SecureBlogInputMiddleware::class,
+    'authMiddleware' => \App\Http\Middleware\AuthMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +84,7 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 
 /*
@@ -99,5 +103,7 @@ $app->router->group([
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
+
+$app->configure("cors");
 
 return $app;

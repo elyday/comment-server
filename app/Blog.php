@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Blog
  *
- * @property int $id
+ * @package App
+ * @property string $hash
  * @property string $name
  * @property string $description
  * @property string $url
@@ -16,23 +17,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $updated_at
  * @method static Builder|Blog whereCreatedAt($value)
  * @method static Builder|Blog whereDescription($value)
- * @method static Builder|Blog whereId($value)
+ * @method static Builder|Blog whereHash($value)
  * @method static Builder|Blog whereName($value)
  * @method static Builder|Blog whereUpdatedAt($value)
  * @method static Builder|Blog whereUrl($value)
- * @method static Builder|Blog whereHash($value)
  * @mixin \Eloquent
- * @property string $hash
  */
 class Blog extends Model
 {
     protected $table = "blog";
+    protected $primaryKey = "hash";
+    protected $keyType = "varchar";
 
     protected $fillable = [
-        'name', 'description', 'url'
+        'hash',
+        'name',
+        'description',
+        'url'
     ];
 
-    protected $hidden = [
-        'hash'
-    ];
+    protected $hidden = [];
 }
